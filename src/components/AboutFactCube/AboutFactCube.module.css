@@ -1,0 +1,515 @@
+/* =================================================================
+   AboutFactCube — 3D rotating fact cube scene
+   ================================================================= */
+
+.scene {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1.05;
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 24px;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 40%,
+            rgba(99, 102, 241, 0.10) 0%,
+            rgba(168, 85, 247, 0.06) 35%,
+            transparent 70%),
+        linear-gradient(180deg, rgba(10, 12, 24, 0.85) 0%, rgba(4, 5, 12, 0.95) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    box-shadow:
+        inset 0 0 60px rgba(99, 102, 241, 0.06),
+        0 24px 60px -20px rgba(0, 0, 0, 0.6);
+    isolation: isolate;
+}
+
+/* === Ambient background === */
+.bgGlowA,
+.bgGlowB {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+.bgGlowA {
+    top: -60px;
+    left: -60px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.55), transparent 70%);
+    animation: fc-floatGlow 12s ease-in-out infinite;
+}
+
+.bgGlowB {
+    bottom: -80px;
+    right: -60px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.45), transparent 70%);
+    animation: fc-floatGlow 14s ease-in-out infinite reverse;
+}
+
+@keyframes fc-floatGlow {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translate(20px, -10px) scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.gridFloor {
+    position: absolute;
+    inset: 65% 0 0 0;
+    background-image:
+        linear-gradient(rgba(99, 102, 241, 0.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 102, 241, 0.10) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(180deg, transparent 0%, #000 40%, #000 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 40%, #000 75%, transparent 100%);
+    transform: perspective(600px) rotateX(60deg);
+    transform-origin: 50% 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* === Particles === */
+.particles {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(200, 215, 255, 0.7);
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(165, 180, 252, 0.6);
+    animation: fc-particle 4s ease-in-out infinite;
+}
+
+@keyframes fc-particle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(-6px);
+    }
+}
+
+/* === Orbital ring === */
+.orbital {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 340px;
+    height: 340px;
+    margin: -170px 0 0 -170px;
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    border-radius: 50%;
+    z-index: 2;
+    pointer-events: none;
+    animation: fc-orbital 22s linear infinite;
+}
+
+.orbitalDotA,
+.orbitalDotB,
+.orbitalDotC {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.orbitalDotA {
+    top: -3px;
+    left: 50%;
+    background: #67e8f9;
+    box-shadow: 0 0 8px #67e8f9;
+    margin-left: -3px;
+}
+
+.orbitalDotB {
+    bottom: -3px;
+    right: 30%;
+    background: #a855f7;
+    box-shadow: 0 0 8px #a855f7;
+}
+
+.orbitalDotC {
+    top: 35%;
+    left: -3px;
+    background: #fb7185;
+    box-shadow: 0 0 8px #fb7185;
+}
+
+@keyframes fc-orbital {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* === 3D Stage + Cube === */
+.stage {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+}
+
+.cube {
+    position: relative;
+    width: var(--size, 260px);
+    height: var(--size, 260px);
+    transform-style: preserve-3d;
+    transform: rotateX(-12deg) rotateY(0deg);
+    animation: fc-cubeSpin 18s linear infinite;
+    transform-origin: center center;
+}
+
+.cubePaused {
+    animation-play-state: paused;
+}
+
+@keyframes fc-cubeSpin {
+    from {
+        transform: rotateX(-12deg) rotateY(0deg);
+    }
+
+    to {
+        transform: rotateX(-12deg) rotateY(360deg);
+    }
+}
+
+/* === Each face === */
+.face {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.0) 50%),
+        var(--bg, rgba(99, 102, 241, 0.18)),
+        rgba(10, 12, 24, 0.92);
+    border: 1.5px solid var(--accent, #6366f1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+        0 0 30px var(--accent, #6366f1),
+        inset 0 0 30px rgba(255, 255, 255, 0.04);
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px;
+    color: #fff;
+    overflow: hidden;
+    /* Each face has a slight transparency so you can see the other faces through it */
+    opacity: 0.92;
+}
+
+.face::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.10), transparent 55%);
+    pointer-events: none;
+}
+
+/* HUD-style corners on each face */
+.faceCorner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--accent);
+    border-style: solid;
+    border-width: 0;
+    opacity: 0.85;
+}
+
+.faceCornerTL {
+    top: 10px;
+    left: 10px;
+    border-top-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 4px;
+}
+
+.faceCornerTR {
+    top: 10px;
+    right: 10px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-top-right-radius: 4px;
+}
+
+.faceCornerBL {
+    bottom: 10px;
+    left: 10px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-bottom-left-radius: 4px;
+}
+
+.faceCornerBR {
+    bottom: 10px;
+    right: 10px;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    border-bottom-right-radius: 4px;
+}
+
+.faceTopBar {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.faceDot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+}
+
+.faceIcon {
+    color: var(--accent);
+    margin-bottom: 14px;
+    filter: drop-shadow(0 0 8px var(--accent));
+}
+
+.faceValue {
+    font-family: 'Oswald', 'JetBrains Mono', monospace;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: 0.005em;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.faceLabel {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+}
+
+.faceSub {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+}
+
+/* === Bottom ticker (current fact label) === */
+.ticker {
+    position: absolute;
+    bottom: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(10, 12, 24, 0.85);
+    border: 1px solid rgba(99, 102, 241, 0.28);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.45);
+    z-index: 8;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.tickerDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px currentColor;
+    animation: fc-tickerBlink 1.5s ease-in-out infinite;
+}
+
+@keyframes fc-tickerBlink {
+
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.tickerLabel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 600;
+    color: rgba(167, 178, 230, 0.7);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.tickerValue {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* === Side chip "hover to pause" === */
+.sideChip {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 8;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(10, 12, 24, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(99, 102, 241, 0.28);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 600;
+    color: #c7d2fe;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.sideChipDot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #22d3ee;
+    box-shadow: 0 0 6px #22d3ee;
+    animation: fc-tickerBlink 1.5s ease-in-out infinite;
+}
+
+/* === Top-right HUD === */
+.hud {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    z-index: 8;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(167, 178, 230, 0.7);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.hudLine {
+    width: 26px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.6), transparent);
+}
+
+/* === Face indicator dots === */
+.dots {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 8;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot:hover {
+    transform: scale(1.3);
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.dotActive {
+    background: var(--dot-accent);
+    box-shadow: 0 0 10px var(--dot-accent);
+    transform: scale(1.4);
+}
+
+/* === Responsive === */
+@media (max-width: 1080px) {
+    .scene {
+        max-width: 420px;
+    }
+}
+
+@media (max-width: 768px) {
+    .scene {
+        max-width: 360px;
+    }
+
+    .cube {
+        --size: 220px !important;
+    }
+
+    .faceValue {
+        font-size: 2rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .cube,
+    .orbital,
+    .bgGlowA,
+    .bgGlowB,
+    .particle,
+    .tickerDot,
+    .sideChipDot {
+        animation: none !important;
+    }
+}

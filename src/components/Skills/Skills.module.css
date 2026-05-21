@@ -1,0 +1,278 @@
+.skills {
+    padding: 60px 0 100px;
+    position: relative;
+}
+
+.intro {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 80px;
+}
+
+.introTitle {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+.introSubtitle {
+    color: #9ca3af;
+    font-size: 1.05rem;
+}
+
+/* ===================================================
+   Category Block — alternating left/right layout
+   =================================================== */
+.categoryBlock {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 100px;
+    position: relative;
+}
+
+.categoryBlock.reversed {
+    grid-template-columns: 1.5fr 1fr;
+}
+
+.categoryBlock.reversed .categoryModelWrap {
+    order: 2;
+}
+
+.categoryBlock.reversed .skillsGrid {
+    order: 1;
+}
+
+/* Category model side (cube + label) */
+.categoryModelWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    position: sticky;
+    top: 120px;
+    will-change: transform;
+}
+
+.cubeStage {
+    width: 220px;
+    height: 220px;
+    perspective: 1000px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cube {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    transform-style: preserve-3d;
+    animation: cubeSpin 18s linear infinite;
+    will-change: transform;
+    filter: drop-shadow(0 20px 40px var(--cube-glow));
+}
+
+@keyframes cubeSpin {
+    0%   { transform: rotateX(-20deg) rotateY(0deg);   }
+    50%  { transform: rotateX(-20deg) rotateY(180deg); }
+    100% { transform: rotateX(-20deg) rotateY(360deg); }
+}
+
+.cubeFace {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--cube-accent) 15%, transparent),
+                                       color-mix(in srgb, var(--cube-accent) 40%, transparent));
+    border: 2px solid var(--cube-accent);
+    box-shadow:
+        0 0 30px var(--cube-glow),
+        inset 0 0 30px var(--cube-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+}
+
+.cubeGlyph {
+    font-size: 3.5rem;
+    color: var(--cube-accent);
+    text-shadow: 0 0 20px var(--cube-accent);
+    font-weight: 300;
+}
+
+.front  { transform: translateZ(70px); }
+.back   { transform: rotateY(180deg) translateZ(70px); }
+.right  { transform: rotateY(90deg) translateZ(70px); }
+.left   { transform: rotateY(-90deg) translateZ(70px); }
+.top    { transform: rotateX(90deg) translateZ(70px); }
+.bottom { transform: rotateX(-90deg) translateZ(70px); }
+
+.categoryLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 22px;
+    background: rgba(17, 20, 31, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid;
+    border-color: currentColor;
+    border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.categoryDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* ===================================================
+   Skills grid side
+   =================================================== */
+.skillsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.skillCard {
+    position: relative;
+    padding: 18px 20px;
+    background: rgba(17, 20, 31, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid;
+    border-radius: 12px;
+    overflow: hidden;
+    will-change: transform;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skillCard:hover {
+    border-color: var(--card-color) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
+        0 0 20px color-mix(in srgb, var(--card-color) 20%, transparent);
+}
+
+.cardGlare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: 12px;
+    mix-blend-mode: overlay;
+}
+
+.skillHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.skillDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.skillName {
+    flex: 1;
+    color: #e5e7eb;
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.skillPercent {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.skillProgressTrack {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.skillProgressFill {
+    height: 100%;
+    border-radius: 3px;
+}
+
+/* ===================================================
+   Responsive — stack vertically on tablet/mobile
+   =================================================== */
+@media (max-width: 900px) {
+    .categoryBlock {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        margin-bottom: 70px;
+    }
+
+    .categoryBlock.reversed {
+        grid-template-columns: 1fr;
+    }
+
+    .categoryBlock.reversed .categoryModelWrap {
+        order: 0;
+    }
+
+    .categoryBlock.reversed .skillsGrid {
+        order: 0;
+    }
+
+    .categoryModelWrap {
+        position: static;
+    }
+
+    .cubeStage {
+        width: 180px;
+        height: 180px;
+    }
+
+    .cube {
+        width: 110px;
+        height: 110px;
+    }
+
+    .cubeFace {
+        width: 110px;
+        height: 110px;
+    }
+
+    .front  { transform: translateZ(55px); }
+    .back   { transform: rotateY(180deg) translateZ(55px); }
+    .right  { transform: rotateY(90deg) translateZ(55px); }
+    .left   { transform: rotateY(-90deg) translateZ(55px); }
+    .top    { transform: rotateX(90deg) translateZ(55px); }
+    .bottom { transform: rotateX(-90deg) translateZ(55px); }
+
+    .cubeGlyph {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .skills {
+        padding: 40px 0 60px;
+    }
+
+    .intro {
+        margin-bottom: 50px;
+    }
+
+    .skillsGrid {
+        grid-template-columns: 1fr;
+    }
+}

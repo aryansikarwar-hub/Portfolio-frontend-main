@@ -1,0 +1,25 @@
+{
+  "name": "aryan-sikarwar-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Aryan Sikarwar - Software Developer Portfolio (Next.js)",
+  "author": "Aryan Sikarwar",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "framer-motion": "^11.0.0",
+    "lenis": "^1.1.13",
+    "lucide-react": "^0.562.0",
+    "next": "^15.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.15.0",
+    "eslint-config-next": "^15.0.0"
+  }
+}

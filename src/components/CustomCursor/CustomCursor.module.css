@@ -1,0 +1,58 @@
+/* Hide on touch devices */
+@media (pointer: coarse) {
+    .cursorOuter,
+    .cursorInner {
+        display: none !important;
+    }
+}
+
+.cursorOuter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid rgba(244, 241, 232, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transition: width 0.25s ease, height 0.25s ease,
+        border-color 0.25s ease, background-color 0.25s ease;
+    will-change: transform;
+    mix-blend-mode: difference;
+}
+
+.cursorInner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background: #f4f1e8;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    box-shadow: 0 0 8px rgba(244, 241, 232, 0.9);
+    will-change: transform;
+    transition: opacity 0.2s ease;
+}
+
+/* Hover state */
+.cursorOuter.hovering {
+    width: 56px;
+    height: 56px;
+    border-color: rgba(201, 196, 185, 0.9);
+    background-color: rgba(244, 241, 232, 0.08);
+    border-width: 2px;
+}
+
+.cursorInner.innerHidden {
+    opacity: 0;
+}
+
+/* Click state */
+.cursorOuter.clicking {
+    width: 22px;
+    height: 22px;
+    border-color: rgba(184, 168, 154, 0.9);
+}

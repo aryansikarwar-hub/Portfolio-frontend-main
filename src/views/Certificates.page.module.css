@@ -1,0 +1,206 @@
+.section {
+    padding: 60px 0 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Parallax background orbs */
+.bgOrb1 {
+    position: absolute;
+    top: 10%;
+    left: -8%;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.18), transparent 70%);
+    filter: blur(50px);
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+.bgOrb2 {
+    position: absolute;
+    bottom: 5%;
+    right: -10%;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15), transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+.intro {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.introTitle {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+.introText {
+    color: #9ca3af;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+/* ===== Grid ===== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+    perspective: 1500px;
+    position: relative;
+    z-index: 1;
+}
+
+.certCard {
+    position: relative;
+    will-change: transform, opacity;
+}
+
+.cardInner {
+    position: relative;
+    background: rgba(17, 20, 31, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid;
+    border-radius: 18px;
+    padding: 28px;
+    overflow: hidden;
+    will-change: transform;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cardGlare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: 18px;
+    mix-blend-mode: overlay;
+    z-index: 1;
+}
+
+.cardTopRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.iconWrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 1.5px solid;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.verifiedBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-radius: 50px;
+    color: #22c55e;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.certTitle {
+    font-size: 1.18rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.35;
+    margin: 0 0 10px;
+}
+
+.certMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.metaItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #9ca3af;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+}
+
+.certDesc {
+    color: #9ca3af;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0 0 16px;
+    flex: 1;
+}
+
+.skillsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.skillChip {
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid;
+    border-radius: 5px;
+    color: #d1d5db;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+}
+
+.verifyBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    padding: 8px 14px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid;
+    border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.verifyBtn:hover {
+    background: rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    .cardInner {
+        padding: 22px;
+    }
+}

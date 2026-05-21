@@ -1,0 +1,913 @@
+.about {
+    position: relative;
+    background: transparent;
+}
+
+.aboutGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: flex-start;
+    margin-bottom: 80px;
+}
+
+/* Terminal Side */
+.terminalWrapper {
+    position: relative;
+}
+
+.aboutTerminal {
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(244, 241, 232, 0.05);
+    position: relative;
+    will-change: transform;
+}
+
+.terminalGlare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: var(--border-radius);
+    mix-blend-mode: overlay;
+    z-index: 1;
+}
+
+.outputSection {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 4px 12px;
+}
+
+.outputKey {
+    color: var(--secondary);
+}
+
+/* Experience Badge */
+.expBadge {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    /* Flush right */
+    background: var(--bg-card);
+    border: 1px solid var(--primary);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--shadow-md), 0 0 20px rgba(244, 241, 232, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.expNumber {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.expLabel {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* Content Side */
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.bio {
+    margin-bottom: 16px;
+    max-width: 600px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+}
+
+.bio strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* =============================================
+   Option 3: Floating Card with Glow Border
+   ============================================= */
+.bioFloatingCard {
+    position: relative;
+    margin-bottom: 8px;
+    padding: 2px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #6366f1, #06b6d4, #8b5cf6, #6366f1);
+    background-size: 400% 400%;
+    animation: borderGlow 6s ease infinite, floatCard 4s ease-in-out infinite;
+    box-shadow:
+        0 0 30px rgba(99, 102, 241, 0.3),
+        0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.bioFloatingCard::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #6366f1, #06b6d4, #8b5cf6, #6366f1);
+    background-size: 400% 400%;
+    animation: borderGlow 6s ease infinite;
+    z-index: -1;
+    filter: blur(14px);
+    opacity: 0.45;
+}
+
+.bioFloatingCard .bio {
+    position: relative;
+    /* Solid dark inner so text is clearly readable */
+    background: rgba(11, 13, 23, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 14px;
+    padding: 26px 28px;
+    margin: 0;
+    color: #e5e7eb;
+    font-size: 1rem;
+    line-height: 1.75;
+    text-align: left;
+}
+
+.bioFloatingCard .bio strong {
+    color: #06b6d4;
+    font-weight: 700;
+}
+
+@keyframes borderGlow {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+}
+
+@keyframes floatCard {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Highlights Grid */
+.highlightsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 12px 0;
+}
+
+/* Center last item if alone in row */
+.highlightsGrid>*:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    justify-self: center;
+}
+
+.highlightCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    padding: 12px 14px;
+    border-radius: var(--border-radius);
+    transition: background-color var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+}
+
+.cardGlare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: var(--border-radius);
+    mix-blend-mode: overlay;
+    opacity: 0.8;
+}
+
+.highlightCard:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--primary);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(244, 241, 232, 0.2);
+}
+
+.highlightIcon {
+    color: var(--primary);
+    margin-top: 2px;
+}
+
+.highlightCard.secondary .highlightIcon {
+    color: var(--secondary);
+}
+
+.highlightCard.accent .highlightIcon {
+    color: var(--accent);
+}
+
+.highlightCard.warning .highlightIcon {
+    color: var(--warning);
+}
+
+.highlightContent h3,
+.highlightContent h4 {
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+    color: var(--text-primary);
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.highlightContent p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Achievements Section */
+.achievementsSection {
+    margin-top: 40px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 60px;
+}
+
+.achievementsTitle {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    background: var(--gradient-cyber);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.achievementsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.achievementCard {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 0;
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+.achievementCard:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    border-color: var(--primary);
+}
+
+/* Card Image */
+.cardImageWrapper {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: #000;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cardBg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    transition: transform 0.5s ease;
+}
+
+.achievementCard:hover .cardBg {
+    transform: scale(1.1);
+}
+
+.cardOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.5));
+}
+
+.achievementIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 155px;
+    /* Overlap image boundary */
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    z-index: 10;
+    color: var(--text-primary);
+}
+
+.achievementInfo {
+    padding: 40px 20px 20px;
+    width: 100%;
+}
+
+.achievementInfo h4 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+
+.place {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.prize {
+    display: inline-block;
+    font-size: 0.85rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--primary);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .aboutGrid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+
+    .achievementsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Center Content on Mobile/Tablet */
+    .content {
+        align-items: center;
+        text-align: center;
+    }
+
+    .content :global(.section-header) {
+        text-align: center !important;
+        align-items: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bio {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .highlightsGrid {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .highlightsGrid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns for compact view */
+        gap: 10px;
+    }
+
+    .highlightCard {
+        padding: 14px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .highlightIcon {
+        margin-top: 0;
+    }
+
+    .achievementsGrid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .expBadge {
+        right: 0;
+        bottom: -80px;
+        /* Push below terminal content to fix overlap */
+    }
+
+    .terminalWrapper {
+        margin-bottom: 60px;
+        /* Make space for the badge */
+    }
+}
+
+/* Very small screens */
+@media (max-width: 375px) {
+    .highlightsGrid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .highlightCard {
+        padding: 12px;
+    }
+
+    .highlightContent h4 {
+        font-size: 0.9rem;
+    }
+
+    .highlightContent p {
+        font-size: 0.8rem;
+    }
+
+    .achievementCard {
+        min-height: 280px;
+    }
+
+    .achievementInfo h4 {
+        font-size: 1rem;
+    }
+
+    .expNumber {
+        font-size: 1.6rem;
+    }
+}
+/* ============================================================
+   Photo card (right side of top row) and below content
+   ============================================================ */
+
+.photoWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    perspective: 1200px;
+}
+
+.photoCard {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 4 / 5;
+    background: rgba(11, 13, 23, 0.92);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 22px;
+    padding: 16px;
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.55),
+        0 0 80px rgba(99, 102, 241, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transform-style: preserve-3d;
+    will-change: transform;
+    isolation: isolate;
+}
+
+/* Rotating conic gradient border */
+.photoCard::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: conic-gradient(
+        from var(--photo-ang, 0deg),
+        transparent 0deg,
+        #6366f1 40deg,
+        #06b6d4 80deg,
+        transparent 140deg,
+        transparent 220deg,
+        #8b5cf6 280deg,
+        #ec4899 320deg,
+        transparent 360deg
+    );
+    border-radius: 24px;
+    z-index: -1;
+    opacity: 0.85;
+    animation: photoBorderSpin 8s linear infinite;
+    filter: blur(1px);
+}
+
+/* Inner soft glow under the border */
+.photoCard::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle at 30% 0%, rgba(99,102,241,0.35), transparent 60%),
+                radial-gradient(circle at 70% 100%, rgba(6,182,212,0.3), transparent 60%);
+    z-index: -2;
+    filter: blur(30px);
+    opacity: 0.7;
+    animation: photoGlowShift 6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@property --photo-ang {
+    syntax: '<angle>';
+    inherits: true;
+    initial-value: 0deg;
+}
+
+@keyframes photoBorderSpin {
+    from { --photo-ang: 0deg; }
+    to   { --photo-ang: 360deg; }
+}
+
+@keyframes photoGlowShift {
+    0%, 100% { transform: translate(0, 0); opacity: 0.5; }
+    50%      { transform: translate(8px, -6px); opacity: 0.85; }
+}
+
+.photoFrame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(6, 182, 212, 0.08));
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Subtle tech-grid pattern overlay */
+.photoFrame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(6, 182, 212, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6, 182, 212, 0.07) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: screen;
+}
+
+/* Holographic diagonal shimmer */
+.photoFrame::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 60%;
+    height: 200%;
+    background: linear-gradient(115deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.12) 50%,
+        transparent 70%);
+    pointer-events: none;
+    z-index: 3;
+    animation: photoShimmer 6s ease-in-out infinite;
+}
+
+@keyframes photoShimmer {
+    0%   { transform: translateX(-100%); }
+    40%  { transform: translateX(200%); }
+    100% { transform: translateX(200%); }
+}
+
+.photoImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.photoFallback {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photoScan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 60px;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(6, 182, 212, 0.2) 50%,
+        transparent 100%);
+    pointer-events: none;
+    animation: photoScanMove 4s ease-in-out infinite;
+}
+
+@keyframes photoScanMove {
+    0%, 100% { transform: translateY(0); opacity: 0.7; }
+    50%      { transform: translateY(calc(100% - 60px)); opacity: 1; }
+}
+
+/* Corner brackets */
+.corner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: #06b6d4;
+    z-index: 2;
+}
+
+.cornerTL { top: 6px;    left: 6px;    border-left: 2px solid; border-top: 2px solid; border-top-left-radius: 6px; }
+.cornerTR { top: 6px;    right: 6px;   border-right: 2px solid; border-top: 2px solid; border-top-right-radius: 6px; }
+.cornerBL { bottom: 6px; left: 6px;    border-left: 2px solid; border-bottom: 2px solid; border-bottom-left-radius: 6px; }
+.cornerBR { bottom: 6px; right: 6px;   border-right: 2px solid; border-bottom: 2px solid; border-bottom-right-radius: 6px; }
+
+.photoBadge {
+    position: absolute;
+    bottom: 28px;
+    right: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(11, 13, 23, 0.85);
+    border: 1px solid #22c55e;
+    border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #22c55e;
+    letter-spacing: 1.5px;
+    z-index: 3;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+}
+
+.photoDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: photoDotBlink 1.2s ease-in-out infinite;
+}
+
+@keyframes photoDotBlink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.4; }
+}
+
+.floatTag {
+    position: absolute;
+    padding: 6px 12px;
+    background: rgba(17, 20, 31, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    border-radius: 8px;
+    color: #06b6d4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    z-index: 4;
+    animation: floatTagBob 4s ease-in-out infinite;
+}
+
+.floatTagTop {
+    top: -20px;
+    left: -10px;
+}
+
+.floatTagBottom {
+    bottom: -16px;
+    right: -10px;
+    animation-delay: -2s;
+    color: #f59e0b;
+    border-color: rgba(245, 158, 11, 0.4);
+}
+
+@keyframes floatTagBob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+}
+
+/* ============== Below content ============== */
+.belowContent {
+    max-width: 900px;
+    margin: 60px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.belowContent .highlightsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    width: 100%;
+    margin: 8px 0;
+}
+
+@media (max-width: 900px) {
+    .aboutGrid {
+        grid-template-columns: 1fr !important;
+        gap: 40px;
+    }
+
+    .photoWrapper {
+        order: -1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .photoScan,
+    .photoDot,
+    .floatTag {
+        animation: none !important;
+    }
+}
+
+/* ============================================================
+   Photo card — new badges + tech-stack strip
+   ============================================================ */
+
+/* Top-left status pill */
+.photoStatusPill {
+    position: absolute;
+    top: 28px;
+    left: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    background: rgba(11, 13, 23, 0.85);
+    border: 1px solid #22c55e;
+    border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #22c55e;
+    letter-spacing: 1.4px;
+    z-index: 5;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+}
+
+.photoStatusDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+    animation: photoDotBlink 1.4s ease-in-out infinite;
+}
+
+/* Top-right meta */
+.photoMetaBadge {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    padding: 5px 11px;
+    background: rgba(11, 13, 23, 0.85);
+    border: 1px solid rgba(99, 102, 241, 0.5);
+    border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #6366f1;
+    letter-spacing: 1.2px;
+    z-index: 5;
+}
+
+/* Override original LIVE badge so it sits at the bottom-left now */
+.photoBadge {
+    position: absolute;
+    bottom: 68px !important;
+    right: 28px !important;
+    top: auto !important;
+}
+
+/* Tech-stack chip strip along bottom */
+.photoStackStrip {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    z-index: 5;
+}
+
+.stackChip {
+    padding: 4px 9px;
+    background: rgba(11, 13, 23, 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(6, 182, 212, 0.45);
+    border-radius: 5px;
+    color: #06b6d4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    animation: stackChipBob 3s ease-in-out infinite;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes stackChipBob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .photoStatusDot,
+    .stackChip,
+    .photoCard::before,
+    .photoCard::after,
+    .photoFrame::after {
+        animation: none !important;
+    }
+}
+
+/* ============================================================
+   belowContent split — title+bio LEFT, FactCube RIGHT
+   ============================================================ */
+.belowGrid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+.belowLeft {
+    text-align: left;
+}
+
+.aboutBigTitle {
+    text-align: left !important;
+    font-size: clamp(2.2rem, 4.8vw, 3.6rem) !important;
+    line-height: 1.05 !important;
+    margin-top: 8px !important;
+}
+
+.belowLeft .bioFloatingCard {
+    margin: 24px 0 0 !important;
+    max-width: none !important;
+}
+
+.belowLeft .bio {
+    color: #e5e7eb !important;
+    font-size: 1.02rem !important;
+    line-height: 1.75 !important;
+}
+
+.belowRight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1400px;
+}
+
+@media (max-width: 960px) {
+    .belowGrid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
+    .belowLeft {
+        text-align: center;
+    }
+
+    .aboutBigTitle {
+        text-align: center !important;
+    }
+}

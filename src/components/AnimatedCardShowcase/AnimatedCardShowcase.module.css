@@ -1,0 +1,479 @@
+/* =================================================================
+   AnimatedCardShowcase — fixed text overlap, scroll-wheel nav
+   ================================================================= */
+
+.showcase {
+    position: relative;
+    width: 100%;
+    min-height: 680px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #060710 0%, #0a0c18 100%);
+    isolation: isolate;
+    margin: 0 auto;
+    box-shadow:
+        0 30px 80px -20px rgba(0, 0, 0, 0.6),
+        inset 0 0 40px rgba(99, 102, 241, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* === HERO CARD (full-bleed background) === */
+.heroCard {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 10;
+}
+
+/* === RIGHT STACK of small cards (4 cards wide) === */
+.stack {
+    position: absolute;
+    bottom: 110px;
+    right: 60px;
+    display: flex;
+    gap: 18px;
+    z-index: 30;
+    /* Stack occupies roughly: 4 * 170 + 3 * 18 = 734px of width */
+}
+
+.smallCard {
+    width: 170px;
+    height: 240px;
+    border-radius: 12px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.smallCard:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 24px 48px rgba(0, 0, 0, 0.7),
+        0 0 0 1px var(--accent);
+}
+
+.smallCard:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.smallContent {
+    position: absolute;
+    inset: 0;
+    padding: 18px 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.smallTopBar {
+    position: absolute;
+    top: 18px;
+    left: 16px;
+    width: 30px;
+    height: 4px;
+    border-radius: 99px;
+    background: #fff;
+}
+
+.smallPlace {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+    margin-bottom: 4px;
+}
+
+.smallTitle,
+.smallTitle2 {
+    font-family: 'Oswald', 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.05;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+}
+
+.smallTitle2 {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* === DETAILS overlay LEFT (constrained width so it never overlaps stack) === */
+.details {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 60px;
+    /* CRITICAL: leave room for the 4-card stack on the right (4×170 + 3×18 + 60 + 24 = ~810px reserved) */
+    right: 810px;
+    z-index: 22;
+    pointer-events: none;
+    max-width: 540px;
+}
+
+.detailsInner {
+    pointer-events: auto;
+}
+
+.placeBox {
+    height: 30px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 6px;
+}
+
+.placeText {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.92);
+    position: relative;
+    padding-left: 42px;
+    white-space: nowrap;
+}
+
+.placeText::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    left: 0;
+    width: 30px;
+    height: 4px;
+    border-radius: 99px;
+    background: var(--accent);
+}
+
+.titleBox {
+    height: clamp(48px, 6.5vw, 88px);
+    overflow: hidden;
+    position: relative;
+}
+
+.title1,
+.title2 {
+    font-family: 'Oswald', 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    line-height: 1;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0;
+    text-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+}
+
+.title2 {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.desc {
+    margin-top: 22px;
+    max-width: 500px;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+
+.cta {
+    margin-top: 26px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.bookmark {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: none;
+    background: var(--accent);
+    color: #1a1a1a;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform 0.25s ease, filter 0.25s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.bookmark:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.discover {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    padding: 0 22px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.25s ease;
+}
+
+.discover:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+/* === BOTTOM BAR (no arrows — scroll hint + progress + counter) === */
+.bottomBar {
+    position: absolute;
+    bottom: 36px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    z-index: 40;
+    pointer-events: none;
+}
+
+.scrollHint {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(10, 12, 24, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.78);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.scrollHintIcon {
+    width: 14px;
+    height: 22px;
+    border-radius: 999px;
+    border: 1.5px solid var(--accent);
+    position: relative;
+    display: inline-block;
+}
+
+.scrollHintWheel {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 1px;
+    animation: cs-wheel 1.6s ease-in-out infinite;
+}
+
+@keyframes cs-wheel {
+
+    0%,
+    100% {
+        opacity: 0.4;
+        transform: translate(-50%, 0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translate(-50%, 6px);
+    }
+}
+
+.progressTrack {
+    flex: 1;
+    max-width: 380px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 99px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progressFill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    height: 100%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    border-radius: 99px;
+}
+
+.counterWrap {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: 'Oswald', 'JetBrains Mono', monospace;
+    color: #fff;
+    position: relative;
+    min-width: 78px;
+    overflow: visible;
+    height: 38px;
+    margin-left: auto;
+}
+
+.counter {
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.counterTotal {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.55);
+    margin-left: 42px;
+}
+
+/* ======= Responsive ======= */
+@media (max-width: 1280px) {
+
+    /* On narrower screens reduce stack to 3 cards visible + tighter spacing */
+    .stack {
+        right: 32px;
+        bottom: 110px;
+        gap: 12px;
+    }
+
+    .smallCard {
+        width: 140px;
+        height: 200px;
+    }
+
+    .smallCard:nth-child(n + 4) {
+        display: none;
+    }
+
+    .details {
+        left: 40px;
+        /* 3 cards visible: 3×140 + 2×12 + 32 + 20 = ~496 reserved */
+        right: 496px;
+    }
+}
+
+@media (max-width: 960px) {
+    .showcase {
+        min-height: 620px;
+    }
+
+    .stack {
+        right: 20px;
+        bottom: 100px;
+    }
+
+    .smallCard {
+        width: 110px;
+        height: 160px;
+    }
+
+    .smallCard:nth-child(n + 3) {
+        display: none;
+    }
+
+    .details {
+        left: 30px;
+        right: 280px;
+    }
+
+    .bottomBar {
+        left: 30px;
+        right: 30px;
+        gap: 14px;
+    }
+}
+
+@media (max-width: 720px) {
+    .showcase {
+        min-height: 560px;
+        border-radius: 18px;
+    }
+
+    .stack {
+        right: 16px;
+        bottom: 100px;
+        gap: 8px;
+    }
+
+    .smallCard {
+        width: 80px;
+        height: 120px;
+    }
+
+    .smallCard:nth-child(n + 3) {
+        display: none;
+    }
+
+    .smallTitle,
+    .smallTitle2 {
+        font-size: 13px;
+    }
+
+    .smallPlace {
+        font-size: 9px;
+    }
+
+    .details {
+        left: 20px;
+        right: 200px;
+    }
+
+    .desc {
+        font-size: 0.86rem;
+        max-width: none;
+    }
+
+    .scrollHint {
+        font-size: 0.55rem;
+        padding: 6px 10px;
+    }
+
+    .progressTrack {
+        max-width: 100px;
+    }
+
+    .counter {
+        font-size: 1.6rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .progressFill,
+    .scrollHintWheel {
+        animation: none !important;
+        transition: none !important;
+    }
+}

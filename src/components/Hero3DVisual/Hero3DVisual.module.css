@@ -1,0 +1,628 @@
+/* Hero3DVisual — Glossy humanoid robot scene styles */
+
+.scene {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1.05;
+    max-width: 540px;
+    margin: 0 auto;
+    /* Background frame removed — 3D model now floats freely against the hero */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    overflow: visible;
+    isolation: isolate;
+}
+
+.starCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Ambient color glows */
+.bgGlowA,
+.bgGlowB {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+.bgGlowA {
+    top: -60px;
+    left: -60px;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.55), transparent 70%);
+    animation: floatGlow 12s ease-in-out infinite;
+}
+
+.bgGlowB {
+    bottom: -80px;
+    right: -60px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.45), transparent 70%);
+    animation: floatGlow 14s ease-in-out infinite reverse;
+}
+
+@keyframes floatGlow {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translate(20px, -10px) scale(1.1);
+        opacity: 0.7;
+    }
+}
+
+.gridFloor {
+    position: absolute;
+    inset: 60% 0 0 0;
+    background-image:
+        linear-gradient(rgba(245, 158, 11, 0.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.10) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 35%, #000 75%, transparent 100%);
+    transform: perspective(600px) rotateX(60deg);
+    transform-origin: 50% 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.stage {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+}
+
+/* Holographic platform under bot */
+.holoPlatform {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 65%;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.holoRing {
+    position: absolute;
+    border: 1.5px solid rgba(254, 215, 170, 0.55);
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    box-shadow:
+        0 0 22px rgba(254, 215, 170, 0.32),
+        inset 0 0 22px rgba(254, 215, 170, 0.20);
+    animation: holoPulse 3.5s ease-in-out infinite;
+}
+
+.holoRing2 {
+    width: 75%;
+    height: 75%;
+    border-color: rgba(251, 191, 36, 0.48);
+    box-shadow:
+        0 0 16px rgba(251, 191, 36, 0.28),
+        inset 0 0 16px rgba(251, 191, 36, 0.18);
+    animation-delay: 0.7s;
+}
+
+.holoRing3 {
+    width: 50%;
+    height: 50%;
+    border-color: rgba(245, 158, 11, 0.55);
+    box-shadow:
+        0 0 12px rgba(245, 158, 11, 0.32),
+        inset 0 0 12px rgba(245, 158, 11, 0.20);
+    animation-delay: 1.4s;
+}
+
+@keyframes holoPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.04);
+        opacity: 1;
+    }
+}
+
+.holoCenter {
+    position: absolute;
+    width: 18%;
+    height: 100%;
+    background: radial-gradient(ellipse, rgba(254, 215, 170, 0.55), transparent 70%);
+    filter: blur(6px);
+}
+
+.botWrap {
+    position: relative;
+    width: 78%;
+    max-width: 420px;
+    z-index: 4;
+    filter: drop-shadow(0 26px 26px rgba(0, 0, 0, 0.5));
+}
+
+.bot {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+
+/* === Wave + idle animations on the SVG groups === */
+
+/* The whole left arm subtly bobs */
+.leftArm {
+    transform-box: fill-box;
+    transform-origin: 116px 240px;
+    animation: leftArmIdle 4s ease-in-out infinite;
+}
+
+@keyframes leftArmIdle {
+
+    0%,
+    100% {
+        transform: rotate(-2deg);
+    }
+
+    50% {
+        transform: rotate(2deg);
+    }
+}
+
+/* The waving hand/forearm rotation about the elbow */
+.forearmLeft {
+    transform-box: fill-box;
+    transform-origin: 80px 170px;
+    animation: waveForearm 1.6s ease-in-out infinite;
+}
+
+@keyframes waveForearm {
+
+    0%,
+    100% {
+        transform: rotate(-14deg);
+    }
+
+    50% {
+        transform: rotate(18deg);
+    }
+}
+
+/* Hand wiggle adds extra liveliness */
+.handLeft {
+    transform-box: fill-box;
+    transform-origin: 72px 90px;
+    animation: waveHand 1.6s ease-in-out infinite;
+}
+
+@keyframes waveHand {
+
+    0%,
+    100% {
+        transform: rotate(8deg);
+    }
+
+    50% {
+        transform: rotate(-12deg);
+    }
+}
+
+/* Right arm subtle swing */
+.rightArm {
+    transform-box: fill-box;
+    transform-origin: 244px 240px;
+    animation: rightArmIdle 4.5s ease-in-out infinite;
+}
+
+@keyframes rightArmIdle {
+
+    0%,
+    100% {
+        transform: rotate(2deg);
+    }
+
+    50% {
+        transform: rotate(-2deg);
+    }
+}
+
+/* Head subtle tilt */
+.head {
+    transform-box: fill-box;
+    transform-origin: 180px 200px;
+    animation: headTilt 6s ease-in-out infinite;
+}
+
+@keyframes headTilt {
+
+    0%,
+    100% {
+        transform: rotate(-1.5deg) translateY(0);
+    }
+
+    25% {
+        transform: rotate(0deg) translateY(-1px);
+    }
+
+    50% {
+        transform: rotate(1.5deg) translateY(0);
+    }
+
+    75% {
+        transform: rotate(0deg) translateY(-1px);
+    }
+}
+
+/* Torso breath */
+.torso {
+    transform-box: fill-box;
+    transform-origin: 180px 290px;
+    animation: torsoBreath 4s ease-in-out infinite;
+}
+
+@keyframes torsoBreath {
+
+    0%,
+    100% {
+        transform: scaleY(1) scaleX(1);
+    }
+
+    50% {
+        transform: scaleY(1.012) scaleX(1.006);
+    }
+}
+
+/* === Floating chips === */
+.chip {
+    position: absolute;
+    z-index: 6;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(10, 12, 24, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(245, 158, 11, 0.28);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: #c7d2fe;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px -8px rgba(245, 158, 11, 0.45);
+}
+
+.chipDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22d3ee;
+    box-shadow: 0 0 8px #22d3ee;
+    animation: chipBlink 1.4s ease-in-out infinite;
+}
+
+.chipDotAmber {
+    background: #fbbf24;
+    box-shadow: 0 0 8px #fbbf24;
+}
+
+.chipDotCyan {
+    background: #67e8f9;
+    box-shadow: 0 0 8px #67e8f9;
+}
+
+@keyframes chipBlink {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+.chipA {
+    top: 9%;
+    left: 5%;
+}
+
+.chipB {
+    top: 16%;
+    right: 4%;
+}
+
+.chipC {
+    bottom: 22%;
+    left: 4%;
+}
+
+/* HUD corner readouts */
+.hudTopLeft,
+.hudBottomRight {
+    position: absolute;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(167, 178, 230, 0.7);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.hudTopLeft {
+    top: 14px;
+    left: 14px;
+}
+
+.hudBottomRight {
+    bottom: 14px;
+    right: 14px;
+}
+
+.hudLine {
+    width: 28px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(245, 158, 11, 0.6), transparent);
+}
+
+.hudBottomRight .hudLine {
+    background: linear-gradient(-90deg, rgba(245, 158, 11, 0.6), transparent);
+}
+
+.hudText {
+    line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .scene {
+        max-width: 420px;
+        border-radius: 20px;
+    }
+
+    .chip {
+        font-size: 0.55rem;
+        padding: 5px 9px;
+    }
+
+    .hudTopLeft,
+    .hudBottomRight {
+        font-size: 0.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .holoRing,
+    .bgGlowA,
+    .bgGlowB,
+    .chipDot,
+    .leftArm,
+    .forearmLeft,
+    .handLeft,
+    .rightArm,
+    .head,
+    .torso {
+        animation: none !important;
+    }
+}
+
+/* ============================================================
+   HoloCore visual animations
+   ============================================================ */
+
+/* Pulsing core plasma */
+.corePlasma {
+    transform-origin: 180px 230px;
+    animation: plasmaSpin 8s linear infinite, plasmaPulse 3s ease-in-out infinite;
+}
+
+@keyframes plasmaSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes plasmaPulse {
+    0%, 100% { opacity: 0.7; }
+    50%      { opacity: 1; }
+}
+
+/* Inner core ring rotating clockwise */
+.coreRing {
+    transform-origin: 180px 230px;
+    animation: ringSpin 12s linear infinite;
+}
+
+.coreRingReverse {
+    transform-origin: 180px 230px;
+    animation: ringSpin 18s linear infinite reverse;
+}
+
+@keyframes ringSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Beam rotor rotates the entire energy-beam group */
+.beamRotor {
+    transform-origin: 180px 230px;
+    animation: ringSpin 10s linear infinite;
+}
+
+/* Pulse rings expanding outward from core */
+.pulseGroup {
+    transform-origin: 180px 230px;
+}
+
+.pulseRing {
+    transform-origin: 180px 230px;
+    animation: pulseExpand 3s ease-out infinite;
+    opacity: 0;
+}
+
+.pulseRing2 { animation-delay: 1s; }
+.pulseRing3 { animation-delay: 2s; }
+
+@keyframes pulseExpand {
+    0%   { transform: scale(0.4); opacity: 0.9; }
+    100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Vertical scan beam pulse */
+.scanBeam {
+    animation: scanFade 4s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes scanFade {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+    50%      { opacity: 0.9; transform: scaleY(1.05); }
+}
+
+/* Floor grid subtle pulse */
+.floorGrid {
+    animation: floorPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes floorPulse {
+    0%, 100% { opacity: 0.3; }
+    50%      { opacity: 0.55; }
+}
+
+/* HUD status dot blink */
+.hudDot {
+    animation: hudBlink 1.2s ease-in-out infinite;
+}
+
+@keyframes hudBlink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.3; }
+}
+
+/* Orbiting tech planets — wraps each orbiter */
+.orbiterRotor {
+    animation-name: ringSpin;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    transform-origin: 180px 230px;
+}
+
+/* Each orbiter pulses gently */
+.orbiter {
+    animation: orbiterFloat 3s ease-in-out infinite;
+}
+
+@keyframes orbiterFloat {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.08); }
+}
+
+/* Code rain — chars fall down */
+.codeColumn {
+    animation: codeFall 4s linear infinite;
+}
+
+@keyframes codeFall {
+    0%   { transform: translateY(-40px); opacity: 0; }
+    20%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateY(40px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .corePlasma,
+    .coreRing,
+    .coreRingReverse,
+    .beamRotor,
+    .pulseRing,
+    .scanBeam,
+    .floorGrid,
+    .hudDot,
+    .orbiterRotor,
+    .orbiter,
+    .codeColumn {
+        animation: none !important;
+    }
+}
+
+/* ============================================================
+   Extra advanced model effects after frame removal
+   ============================================================ */
+
+/* Subtle whole-scene float so the model gently bobs in space */
+.scene {
+    animation: heroSceneFloat 6s ease-in-out infinite;
+    will-change: transform;
+}
+
+@keyframes heroSceneFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-12px); }
+}
+
+/* Soft radial glow underneath the model (floor reflection) */
+.scene::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 4%;
+    width: 60%;
+    height: 60px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center,
+        rgba(245, 158, 11, 0.4) 0%,
+        rgba(251, 191, 36, 0.25) 40%,
+        transparent 70%);
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
+    animation: floorGlowPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes floorGlowPulse {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+    50%      { opacity: 1;   transform: translateX(-50%) scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scene,
+    .scene::before {
+        animation: none !important;
+    }
+}
