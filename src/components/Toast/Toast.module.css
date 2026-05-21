@@ -1,6 +1,6 @@
 .toastWrapper {
     position: fixed;
-    bottom: 30px;
+    top: 30px;
     right: 30px;
     z-index: 9999;
     pointer-events: none;
@@ -81,7 +81,7 @@
 
 @media (max-width: 480px) {
     .toastWrapper {
-        bottom: 20px;
+        top: 20px;
         right: 20px;
         left: 20px;
     }
