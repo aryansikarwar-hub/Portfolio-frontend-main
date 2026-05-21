@@ -95,7 +95,7 @@ function Contact() {
     const ref = useRef(null)
     const formRef = useRef(null)
     const isInView = useInView(ref, { margin: "-100px" })
-    const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+    const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [toast, setToast] = useState({ isVisible: false, message: '', type: 'success' })
     const [currentLangIndex, setCurrentLangIndex] = useState(0)
@@ -138,7 +138,7 @@ function Contact() {
                 website: '', // honeypot — stays empty for real users
             })
             showToast('Message sent successfully! I will get back to you soon.', 'success')
-            setFormData({ name: '', email: '', message: '' })
+            setFormData({ name: '', email: '', subject: '', message: '' })
         } catch (err) {
             const msg =
                 err?.details?.[0]?.message ||
