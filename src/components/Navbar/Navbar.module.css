@@ -115,6 +115,12 @@
     align-items: center;
 }
 
+.mobileControls {
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
 .mobileMenuBtn {
     display: none;
     flex-direction: column;
@@ -295,6 +301,10 @@
     .navLinks,
     .rightCluster {
         display: none;
+    }
+
+    .mobileControls {
+        display: flex;
     }
 
     .mobileMenuBtn {
