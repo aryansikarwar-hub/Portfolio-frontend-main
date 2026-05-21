@@ -138,16 +138,21 @@ function Navbar() {
                     </div>
                 </div>
 
-                {/* Mobile Menu Button */}
-                <button
-                    className={`${styles.mobileMenuBtn} ${isMobileMenuOpen ? styles.active : ''}`}
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    aria-label="Toggle menu"
-                >
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+                {/* Mobile: search + menu button */}
+                <div className={styles.mobileControls}>
+                    <div className={styles.mobileSearch}>
+                        <SearchBar />
+                    </div>
+                    <button
+                        className={`${styles.mobileMenuBtn} ${isMobileMenuOpen ? styles.active : ''}`}
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu */}
