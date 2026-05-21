@@ -28,10 +28,10 @@ const footerLinks = [
 ]
 
 const socials = [
-    { icon: Linkedin,  url: 'https://www.linkedin.com/in/aryansikarwar/', label: 'LinkedIn' },
-    { icon: Github,    url: 'https://github.com/aryansikarwar',           label: 'GitHub' },
-    { icon: Instagram, url: 'https://instagram.com/aryansikarwar',        label: 'Instagram' },
-    { icon: Mail,      url: 'mailto:aryan.sikarwar@example.com',          label: 'Email' },
+    { icon: Linkedin,  url: 'https://www.linkedin.com/in/aryan-singh-sikarwar-42211b377/', label: 'LinkedIn' },
+    { icon: Github,    url: 'https://github.com/aryansikarwar-hub',                       label: 'GitHub' },
+    { icon: Instagram, url: 'https://instagram.com/aryansikarwar',                        label: 'Instagram' },
+    { icon: Mail,      url: 'mailto:aryansinghsikarwar518@gmail.com',                     label: 'Email' },
 ]
 
 function Footer() {

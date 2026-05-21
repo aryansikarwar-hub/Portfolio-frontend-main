@@ -2,7 +2,7 @@ import '@/styles/global.css'
 import AppShell from './AppShell'
 
 export const metadata = {
-    metadataBase: new URL('https://aryan-sikarwar.vercel.app'),
+    metadataBase: new URL('https://aryansikarwar.vercel.app'),
     title: {
         default: 'Aryan Sikarwar | Software Developer',
         template: '%s',
@@ -26,13 +26,40 @@ export const metadata = {
         description:
             'Software Developer specializing in building scalable web applications with modern technologies.',
         type: 'website',
+        url: 'https://aryansikarwar.vercel.app',
+        siteName: 'Aryan Sikarwar',
+        images: [
+            {
+                url: '/icon.png',
+                width: 512,
+                height: 512,
+                alt: 'Aryan Sikarwar',
+            },
+        ],
     },
-    icons: { icon: '/vite.svg' },
+    twitter: {
+        card: 'summary',
+        title: 'Aryan Sikarwar | Software Developer',
+        description: 'Building scalable web applications with React, Node.js, and modern cloud tech.',
+        images: ['/icon.png'],
+    },
+    // File-based icons in /app are picked up automatically (icon.png, apple-icon.png, favicon.ico).
+    // We keep an explicit `icons` map as well so older browsers and link previews resolve cleanly.
+    icons: {
+        icon: [
+            { url: '/favicon.ico', sizes: 'any' },
+            { url: '/icon.png', type: 'image/png', sizes: '512x512' },
+        ],
+        apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+        shortcut: '/favicon.ico',
+    },
+    manifest: '/manifest.json',
 }
 
 export const viewport = {
     width: 'device-width',
     initialScale: 1,
+    maximumScale: 5,
     themeColor: '#06070a',
 }
 
