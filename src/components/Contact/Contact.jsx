@@ -66,12 +66,7 @@ const socialLinks = [
         icon: <Mail />,
         color: 'accent'
     },
-    {
-        name: 'Telegram',
-        url: 'https://web.telegram.org/a/#8599434643',
-        icon: <Telegram />,
-        color: 'primary'
-    },
+   
 ]
 
 const CONTACT_EMAIL = 'aryansinghsikarwar518@gmail.com'
