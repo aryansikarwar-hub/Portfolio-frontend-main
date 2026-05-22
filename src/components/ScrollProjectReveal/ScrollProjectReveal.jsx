@@ -7,6 +7,7 @@ import {
     ArrowUpRight, Star, Code,
     Book, Camera, Gamepad2, Music, Mountain, Code2, Coffee, Heart,
 } from 'lucide-react'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 import styles from './ScrollProjectReveal.module.css'
 
 /* =================================================================
@@ -43,6 +44,12 @@ function ItemStage({ item, index, total, basePath, ctaLabel }) {
     const stageRef = useRef(null)
     const navigate = useRouter()
     const [hovered, setHovered] = useState(false)
+
+    // On phones/tablets, the heavy scroll-driven spring animation made cards
+    // start fully transparent and only fade in within a narrow scroll window —
+    // which felt like the projects were "loading slowly". On mobile we instead
+    // render a static, instantly-visible layout with a light fade-in.
+    const isMobile = useMediaQuery('(max-width: 980px)')
 
     /* Direction alternation:
        Stage 0 (even): image LEFT, details RIGHT
@@ -109,7 +116,7 @@ function ItemStage({ item, index, total, basePath, ctaLabel }) {
             <motion.div
                 className={styles.sideOrb}
                 style={{
-                    y: orbY,
+                    y: isMobile ? 0 : orbY,
                     background: `radial-gradient(circle, ${accent}66, transparent 65%)`,
                 }}
                 aria-hidden
@@ -118,7 +125,7 @@ function ItemStage({ item, index, total, basePath, ctaLabel }) {
             {/* Big floating index number (parallax) */}
             <motion.div
                 className={styles.bigIndex}
-                style={{ y: bigIndexY, opacity: bigIndexOpacity }}
+                style={isMobile ? { opacity: 0.08 } : { y: bigIndexY, opacity: bigIndexOpacity }}
                 aria-hidden
             >
                 {String(index + 1).padStart(2, '0')}
@@ -129,7 +136,9 @@ function ItemStage({ item, index, total, basePath, ctaLabel }) {
                 {/* ========= IMAGE PANEL ========= */}
                 <motion.div
                     className={`${styles.imgPanel} ${imageOnLeft ? styles.imgPanelLeft : styles.imgPanelRight} ${hovered ? styles.imgPanelHover : ''}`}
-                    style={{
+                    style={isMobile ? {
+                        background: item.gradient || `radial-gradient(circle at 30% 25%, ${accent}aa, transparent 55%), linear-gradient(135deg, #0a0c18, #04050a)`,
+                    } : {
                         x: imgX,
                         y: imgY,
                         rotateY: imgRotYSpring,
@@ -138,6 +147,10 @@ function ItemStage({ item, index, total, basePath, ctaLabel }) {
                         transformPerspective: 1400,
                         background: item.gradient || `radial-gradient(circle at 30% 25%, ${accent}aa, transparent 55%), linear-gradient(135deg, #0a0c18, #04050a)`,
                     }}
+                    initial={isMobile ? { opacity: 0, y: 30 } : false}
+                    whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+                    viewport={isMobile ? { once: true, margin: '-60px' } : undefined}
+                    transition={isMobile ? { duration: 0.5, ease: 'easeOut' } : undefined}
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                     onClick={goTo}
@@ -200,7 +213,11 @@ function ItemStage({ item, index, total, basePath, ctaLabel }) {
                 {/* ========= DETAILS PANEL ========= */}
                 <motion.div
                     className={`${styles.detPanel} ${imageOnLeft ? styles.detPanelRight : styles.detPanelLeft}`}
-                    style={{ x: detX, y: detY, opacity }}
+                    style={isMobile ? undefined : { x: detX, y: detY, opacity }}
+                    initial={isMobile ? { opacity: 0, y: 30 } : false}
+                    whileInView={isMobile ? { opacity: 1, y: 0 } : undefined}
+                    viewport={isMobile ? { once: true, margin: '-60px' } : undefined}
+                    transition={isMobile ? { duration: 0.5, ease: 'easeOut', delay: 0.1 } : undefined}
                 >
                     <div className={styles.detMetaRow}>
                         <span className={styles.detMetaTag}>

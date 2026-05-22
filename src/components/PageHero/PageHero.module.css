@@ -68,6 +68,9 @@
     letter-spacing: -0.03em;
     margin-bottom: 18px;
     max-width: 720px;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
 }
 
 .pageSubtitle {
@@ -307,6 +310,9 @@
         height: 180px;
         right: -20px;
     }
+    .pageTitle {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 600px) {
@@ -315,9 +321,27 @@
         padding: 110px 0 50px;
     }
     .modelStage {
-        opacity: 0.25;
-        width: 140px;
-        height: 140px;
+        opacity: 0.22;
+        width: 130px;
+        height: 130px;
+        right: -30px;
+    }
+    .pageTitle {
+        font-size: clamp(2rem, 9vw, 3rem);
+        max-width: 100%;
+    }
+    .pageSubtitle {
+        max-width: 100%;
+    }
+    .breadcrumb {
+        font-size: 0.72rem;
+        padding: 7px 13px;
+    }
+}
+
+@media (max-width: 400px) {
+    .pageTitle {
+        font-size: clamp(1.7rem, 9vw, 2.4rem);
     }
 }
 
@@ -325,12 +349,19 @@
    Advanced parallax + animated transitions
    ============================================================ */
 
-/* Title characters split for word-by-word animation */
-.titleChar {
+/* Title words split for word-by-word animation.
+   The wrapper flows inline so wrapping happens between words; the inner
+   gradient-text keeps each word unbreakable so words never split mid-word. */
+.titleWord {
     display: inline-block;
     transform-origin: bottom center;
     transform-style: preserve-3d;
     will-change: transform, opacity;
+    white-space: pre;
+}
+
+.titleWord > :global(.gradient-text) {
+    white-space: nowrap;
 }
 
 /* Floating decorative blobs */
@@ -442,7 +473,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .titleChar,
+    .titleWord,
     .floatBlob,
     .dot,
     .scrollHintDot {

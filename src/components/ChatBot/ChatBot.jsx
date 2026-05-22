@@ -27,7 +27,7 @@ const KNOWLEDGE = [
     },
     {
         match: ['hire', 'work', 'available', 'freelance'],
-        reply: "Yes, Aryan is open to freelance and full-time roles. Tap the HIRE ME button up top, or head to the Contact page to send a project brief.",
+        reply: "Yes, Aryan is open to freelance and full-time roles. Tap the HIRE ME button up top, or open the Hire Me page to send a detailed brief.",
     },
     {
         match: ['project', 'portfolio', 'showcase'],
