@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, User, Cpu, Folder, Briefcase, FileText, Mail } from 'lucide-react'
+import { Home, User, Cpu, Folder, Briefcase, FileText, Mail, X } from 'lucide-react'
 import SearchBar from '../SearchBar/SearchBar'
 import styles from './Navbar.module.css'
 
@@ -35,7 +35,7 @@ function HireMeButton() {
     }
     return (
         <Link
-            href="/contact"
+            href="/hire"
             className="hireBtn"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
@@ -159,32 +159,65 @@ function Navbar() {
             <motion.div
                 className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.open : ''}`}
                 initial={false}
-                animate={isMobileMenuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: '100%' }}
+                animate={isMobileMenuOpen ? { opacity: 1 } : { opacity: 0 }}
+                onClick={(e) => {
+                    // Tap on the dimmed backdrop (outside the card) closes the menu
+                    if (e.target === e.currentTarget) setIsMobileMenuOpen(false)
+                }}
             >
-                <ul className={styles.mobileLinks}>
-                    {navLinks.map((link, index) => {
-                        const Icon = link.icon
-                        return (
-                            <motion.li
-                                key={link.name}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={isMobileMenuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                                transition={{ delay: index * 0.05 }}
-                            >
-                                <Link href={link.path}>
-                                    <Icon size={20} style={{ marginRight: '12px', verticalAlign: 'middle' }} />
-                                    {link.name}
-                                    <span className={styles.linkNumber}>0{index + 1}</span>
-                                </Link>
-                            </motion.li>
-                        )
-                    })}
-                    <li style={{ width: '100%', listStyle: 'none', marginTop: '20px' }}>
-                        <Link href="/contact" className={styles.mobileCta}>
-                            ✦ Hire Me
-                        </Link>
-                    </li>
-                </ul>
+                <motion.div
+                    className={styles.mobileCard}
+                    initial={false}
+                    animate={isMobileMenuOpen ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -20, scale: 0.96 }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 26 }}
+                >
+                    {/* Card header with title + close button */}
+                    <div className={styles.mobileCardHeader}>
+                        <span className={styles.mobileCardTitle}>Menu</span>
+                        <button
+                            className={styles.mobileCloseBtn}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            aria-label="Close menu"
+                            type="button"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    <ul className={styles.mobileLinks}>
+                        {navLinks.map((link, index) => {
+                            const Icon = link.icon
+                            const isActive =
+                                link.path === '/'
+                                    ? pathname === '/'
+                                    : pathname.startsWith(link.path)
+                            return (
+                                <motion.li
+                                    key={link.name}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={isMobileMenuOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                                    transition={{ delay: isMobileMenuOpen ? index * 0.04 : 0 }}
+                                >
+                                    <Link
+                                        href={link.path}
+                                        className={isActive ? styles.mobileLinkActive : ''}
+                                    >
+                                        <span className={styles.mobileLinkIcon}>
+                                            <Icon size={18} />
+                                        </span>
+                                        <span className={styles.mobileLinkText}>{link.name}</span>
+                                        <span className={styles.linkNumber}>0{index + 1}</span>
+                                    </Link>
+                                </motion.li>
+                            )
+                        })}
+                        <li className={styles.mobileCtaWrap}>
+                            <Link href="/hire" className={styles.mobileCta}>
+                                ✦ Hire Me
+                            </Link>
+                        </li>
+                    </ul>
+                </motion.div>
             </motion.div>
         </motion.nav>
     )

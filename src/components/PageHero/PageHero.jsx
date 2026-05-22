@@ -40,8 +40,11 @@ function PageHero({ title, subtitle, tag, accent = '#6366f1', icon, model = 'cub
     const smoothModelY = useSpring(modelY, { stiffness: 80, damping: 28 })
     const smoothSubtitleY = useSpring(subtitleY, { stiffness: 80, damping: 28 })
 
-    // Split title into characters for animated reveal
-    const titleChars = title.split('')
+    // Split title into WORDS (each word unbreakable) for animated reveal.
+    // Splitting by character caused words like "Together" to break mid-word
+    // on narrow screens. We keep each word as one inline-block unit and let
+    // wrapping happen only between words.
+    const titleWords = title.split(' ')
 
     return (
         <section className={styles.pageHero} ref={ref}>
@@ -129,21 +132,20 @@ function PageHero({ title, subtitle, tag, accent = '#6366f1', icon, model = 'cub
                         </motion.span>
                     )}
                     <h1 className={styles.pageTitle} aria-label={title}>
-                        {titleChars.map((char, i) => (
+                        {titleWords.map((word, i) => (
                             <motion.span
                                 key={i}
-                                className={styles.titleChar}
+                                className={styles.titleWord}
                                 initial={{ opacity: 0, y: 60, rotateX: -90 }}
                                 animate={{ opacity: 1, y: 0, rotateX: 0 }}
                                 transition={{
-                                    delay: 0.3 + i * 0.04,
+                                    delay: 0.3 + i * 0.08,
                                     duration: 0.6,
                                     ease: [0.22, 1, 0.36, 1],
                                 }}
                             >
-                                <span className="gradient-text">
-                                    {char === ' ' ? '\u00A0' : char}
-                                </span>
+                                <span className="gradient-text">{word}</span>
+                                {i < titleWords.length - 1 ? ' ' : ''}
                             </motion.span>
                         ))}
                     </h1>
@@ -153,7 +155,7 @@ function PageHero({ title, subtitle, tag, accent = '#6366f1', icon, model = 'cub
                             style={{ opacity: subtitleOpacity, y: smoothSubtitleY }}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 + titleChars.length * 0.04 + 0.1, duration: 0.6 }}
+                            transition={{ delay: 0.3 + titleWords.length * 0.08 + 0.1, duration: 0.6 }}
                         >
                             {subtitle}
                         </motion.p>
