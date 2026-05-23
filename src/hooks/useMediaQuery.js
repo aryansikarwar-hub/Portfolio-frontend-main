@@ -36,4 +36,36 @@ export function useMediaQuery(query) {
     return matches
 }
 
+/**
+ * useMediaQueryReady — like useMediaQuery but also reports whether the
+ * hook has mounted on the client yet. Useful when the desktop and mobile
+ * render trees are completely different and you want to avoid a flash of
+ * the wrong layout (render a neutral placeholder until `ready` is true).
+ *
+ *   const { matches: isDesktop, ready } = useMediaQueryReady('(min-width: 1025px)')
+ *   if (!ready) return <Placeholder />
+ */
+export function useMediaQueryReady(query) {
+    const [state, setState] = useState({ matches: false, ready: false })
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || !window.matchMedia) return
+
+        const mql = window.matchMedia(query)
+        const onChange = () => setState({ matches: mql.matches, ready: true })
+
+        onChange()
+
+        if (mql.addEventListener) {
+            mql.addEventListener('change', onChange)
+            return () => mql.removeEventListener('change', onChange)
+        } else {
+            mql.addListener(onChange)
+            return () => mql.removeListener(onChange)
+        }
+    }, [query])
+
+    return state
+}
+
 export default useMediaQuery

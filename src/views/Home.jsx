@@ -7,9 +7,13 @@ import { User, Cpu, Folder, Briefcase, FileText, Mail, ArrowRight } from 'lucide
 import Hero from '../components/Hero/Hero'
 import PageTransition from '../components/PageTransition/PageTransition'
 import FAQ from '../components/FAQ/FAQ'
+import { useMediaQueryReady } from '../hooks/useMediaQuery'
 import styles from './Home.module.css'
 
 const AchievementCarousel = lazy(() => import('../components/AchievementCarousel/AchievementCarousel'))
+// Desktop-only redesigned landing (3D hero + parallax + magnetic cards).
+// Lazy so its code only loads when actually rendered on desktop.
+const HomeDesktop = lazy(() => import('../components/HomeDesktop/HomeDesktop'))
 
 const pageTeasers = [
     { name: 'About', path: '/about', icon: User, color: '#6366f1', desc: 'My story, principles, and the developer behind the code.' },
@@ -44,6 +48,26 @@ const homeFaqs = [
 ]
 
 function Home() {
+    // Desktop (>=1025px) gets the fully redesigned 3D/parallax landing.
+    // Mobile/tablet keeps the original layout exactly as-is.
+    const { matches: isDesktop, ready } = useMediaQueryReady('(min-width: 1025px)')
+
+    if (ready && isDesktop) {
+        return (
+            <PageTransition>
+                <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+                    <HomeDesktop />
+                </Suspense>
+
+                <Suspense fallback={<div style={{ height: 100 }} />}>
+                    <AchievementCarousel />
+                </Suspense>
+
+                <FAQ items={homeFaqs} />
+            </PageTransition>
+        )
+    }
+
     return (
         <PageTransition>
             <Hero />

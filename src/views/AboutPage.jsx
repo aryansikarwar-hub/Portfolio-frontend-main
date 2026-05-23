@@ -6,8 +6,11 @@ import PageTransition from '../components/PageTransition/PageTransition'
 import PageHero from '../components/PageHero/PageHero'
 import FAQ from '../components/FAQ/FAQ'
 import DesignProcess from '../components/DesignProcess/DesignProcess'
+import { useMediaQueryReady } from '../hooks/useMediaQuery'
 
 const About = lazy(() => import('../components/About/About'))
+// Desktop-only redesigned About (3D portrait + parallax + timeline).
+const AboutDesktop = lazy(() => import('../components/AboutDesktop/AboutDesktop'))
 
 const aboutFaqs = [
     {
@@ -87,6 +90,22 @@ const numberStats = [
 ]
 
 function AboutPage() {
+    // Desktop (>=1025px) gets the fully redesigned About experience.
+    // Mobile/tablet keeps the original page exactly as-is.
+    const { matches: isDesktop, ready } = useMediaQueryReady('(min-width: 1025px)')
+
+    if (ready && isDesktop) {
+        return (
+            <PageTransition>
+                <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+                    <AboutDesktop />
+                </Suspense>
+                <DesignProcess />
+                <FAQ items={aboutFaqs} title="About — FAQ" />
+            </PageTransition>
+        )
+    }
+
     return (
         <PageTransition>
             <PageHero
